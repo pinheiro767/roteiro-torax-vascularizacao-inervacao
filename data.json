@@ -1,0 +1,578 @@
+[
+  {
+    "group": "G1",
+    "code": "1",
+    "name": "Aorta",
+    "desc": "Grande artéria sistêmica que recebe o sangue do ventrículo esquerdo e distribui-o para o organismo.",
+    "loc": "No tórax, identifique o grande vaso arterial de parede espessa relacionado ao arco aórtico e à aorta descendente.",
+    "img": "images/1.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "1.a",
+    "name": "Parte torácica da aorta",
+    "desc": "Porção descendente da aorta situada no mediastino posterior; origina ramos viscerais e parietais, incluindo artérias intercostais posteriores.",
+    "loc": "Procure à esquerda dos corpos vertebrais torácicos, descendendo em direção ao hiato aórtico.",
+    "img": "images/2.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "2",
+    "name": "Artérias intercostais posteriores",
+    "desc": "Irrigam a parede torácica posterior e lateral. A 1ª e a 2ª geralmente vêm da artéria intercostal suprema; da 3ª à 11ª, da aorta torácica.",
+    "loc": "Procure vasos arteriais seguindo os espaços intercostais a partir da região posterior.",
+    "img": "images/3.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "2.a",
+    "name": "Ramo dorsal da artéria intercostal posterior",
+    "desc": "Ramo que segue posteriormente para estruturas do dorso e emite ramo espinal para o canal vertebral.",
+    "loc": "Localize-o próximo à origem da artéria intercostal posterior, dirigindo-se para trás junto à coluna.",
+    "img": "images/4.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "2.b",
+    "name": "Ramo colateral da artéria intercostal posterior",
+    "desc": "Ramo que acompanha a margem superior da costela inferior, complementando o suprimento do espaço intercostal.",
+    "loc": "Use a regra espacial: feixe principal embaixo da costela de cima; colateral em cima da costela de baixo.",
+    "img": "images/4.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "2.c",
+    "name": "Ramo cutâneo lateral",
+    "desc": "Ramo que emerge lateralmente pela parede torácica para pele e tecido subcutâneo.",
+    "loc": "Procure sua saída na região lateral do espaço intercostal.",
+    "img": "images/4.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "2.c.i",
+    "name": "Ramos mamários laterais",
+    "desc": "Ramos destinados à porção lateral da mama, derivados de ramos cutâneos laterais das artérias intercostais posteriores.",
+    "loc": "Na mama, procure vasos que chegam pela região lateral.",
+    "img": "images/5.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "3",
+    "name": "Artéria subcostal",
+    "desc": "Ramo parietal da aorta torácica que percorre inferiormente a 12ª costela.",
+    "loc": "Procure imediatamente abaixo da 12ª costela; não ocupa um espaço intercostal.",
+    "img": "images/6.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "4",
+    "name": "Artéria axilar",
+    "desc": "Continuação da artéria subclávia após a margem lateral da 1ª costela; irriga axila e membro superior.",
+    "loc": "Na axila, procure o grande vaso arterial cercado pelos fascículos do plexo braquial.",
+    "img": "images/7.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "4.a",
+    "name": "Artéria torácica superior",
+    "desc": "Pequeno ramo da primeira porção da artéria axilar que irriga regiões superiores da parede torácica.",
+    "loc": "Procure um ramo curto e superior próximo à primeira porção da axilar.",
+    "img": "images/7.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "4.b",
+    "name": "Artéria torácica lateral",
+    "desc": "Ramo da artéria axilar que desce pela parede lateral do tórax, acompanhando a borda lateral do peitoral menor e irrigando serrátil anterior e mama.",
+    "loc": "Procure um vaso descendente na parede lateral da axila.",
+    "img": "images/5.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "5",
+    "name": "Artéria subclávia",
+    "desc": "Artéria da raiz do pescoço que continua como artéria axilar após a 1ª costela.",
+    "loc": "Procure profundamente à clavícula, superior à 1ª costela.",
+    "img": "images/7.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "5.a",
+    "name": "Tronco costocervical",
+    "desc": "Ramo da artéria subclávia que dá origem, entre outros, à artéria intercostal suprema.",
+    "loc": "Procure na região posterior da subclávia, próximo ao colo da 1ª costela.",
+    "img": "images/18.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "5.a.i",
+    "name": "Artéria intercostal suprema",
+    "desc": "Ramo do tronco costocervical que participa da irrigação dos dois primeiros espaços intercostais posteriores.",
+    "loc": "Associe: SUPREMA = superior = 1º e 2º espaços posteriores.",
+    "img": "images/18.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "5.a.ii",
+    "name": "1ª e 2ª artérias intercostais posteriores",
+    "desc": "CORREÇÃO: são posteriores, não anteriores. Originam-se geralmente da artéria intercostal suprema.",
+    "loc": "Procure os dois primeiros espaços intercostais posteriores, superiores aos ramos diretos da aorta.",
+    "img": "images/18.jpg",
+    "corrected": true
+  },
+  {
+    "group": "G1",
+    "code": "5.b",
+    "name": "Artéria torácica interna",
+    "desc": "Ramo da subclávia que desce na parede anterior do tórax, lateral ao esterno.",
+    "loc": "Procure na face interna da parede anterior, paralela ao esterno.",
+    "img": "images/5.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "5.b.i",
+    "name": "Artérias intercostais anteriores (1ª à 6ª)",
+    "desc": "Ramos da artéria torácica interna para os seis primeiros espaços intercostais.",
+    "loc": "Na parede anterior, acompanhe os ramos que saem lateralmente da torácica interna.",
+    "img": "images/5.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "5.b.ii",
+    "name": "Ramos mamários mediais",
+    "desc": "Ramos da torácica interna que alcançam a mama pelo lado medial.",
+    "loc": "Associe: interna perto do esterno → mamários mediais.",
+    "img": "images/5.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "5.b.iii",
+    "name": "Ramos perfurantes",
+    "desc": "Ramos da torácica interna que atravessam os espaços intercostais e alcançam tecidos superficiais.",
+    "loc": "Procure pequenos vasos atravessando a parede anterior perto do esterno.",
+    "img": "images/5.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "5.b.iv",
+    "name": "Ramos esternais",
+    "desc": "Pequenos ramos destinados ao esterno e tecidos adjacentes.",
+    "loc": "Procure ramos curtos dirigidos medialmente em direção ao esterno.",
+    "img": "images/5.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "5.c",
+    "name": "Artéria musculofrênica",
+    "desc": "Ramo terminal da artéria torácica interna que acompanha o rebordo costal e origina intercostais anteriores inferiores.",
+    "loc": "Procure ao longo do arco costal, seguindo inferolateralmente.",
+    "img": "images/6.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "5.c.i",
+    "name": "Artérias intercostais anteriores (7ª à 9ª)",
+    "desc": "Ramos da musculofrênica para os 7º, 8º e 9º espaços intercostais.",
+    "loc": "Associe: 1–6 torácica interna; 7–9 musculofrênica.",
+    "img": "images/6.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "5.d",
+    "name": "Artéria epigástrica superior",
+    "desc": "Ramo terminal da torácica interna que entra na parede abdominal anterior e anastomosa com a epigástrica inferior.",
+    "loc": "Procure descendo da torácica interna para a bainha do reto abdominal.",
+    "img": "images/12.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "6",
+    "name": "Feixe vásculo-nervoso intercostal principal",
+    "desc": "Conjunto formado por veia, artéria e nervo intercostais, disposto no sulco costal em ordem V-A-N de superior para inferior.",
+    "loc": "Procure na margem inferior da costela superior, entre intercostal interno e íntimo.",
+    "img": "images/12.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "7",
+    "name": "Feixe vásculo-nervoso intercostal colateral",
+    "desc": "Ramo colateral menor que percorre a margem superior da costela inferior.",
+    "loc": "Compare com o principal: colateral = borda superior da costela de baixo.",
+    "img": "images/10.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "8",
+    "name": "Nervos intercostais (T1–T11)",
+    "desc": "CORREÇÃO: a denominação adequada é nervos intercostais T1–T11. São os ramos anteriores dos nervos espinais torácicos.",
+    "loc": "Procure o componente mais inferior do feixe VAN no espaço intercostal.",
+    "img": "images/10.jpg",
+    "corrected": true
+  },
+  {
+    "group": "G1",
+    "code": "8.a",
+    "name": "Ramo posterior do nervo espinal torácico",
+    "desc": "CORREÇÃO DE HIERARQUIA: o ramo posterior pertence ao nervo espinal torácico; não é um 'nervo intercostal posterior'. Inerva estruturas do dorso.",
+    "loc": "Procure-o dirigindo-se posteriormente logo após a saída do nervo espinal.",
+    "img": "images/11.jpg",
+    "corrected": true
+  },
+  {
+    "group": "G1",
+    "code": "8.b",
+    "name": "Ramo anterior do nervo espinal torácico = nervo intercostal",
+    "desc": "O ramo anterior de T1–T11 segue no espaço intercostal e constitui o nervo intercostal.",
+    "loc": "Acompanhe o nervo lateralmente entre os músculos intercostais interno e íntimo.",
+    "img": "images/10.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "8.b.i",
+    "name": "Ramo colateral do nervo intercostal",
+    "desc": "Ramo que surge próximo ao ângulo da costela e segue pela margem superior da costela inferior.",
+    "loc": "Compare visualmente tronco principal e ramo colateral.",
+    "img": "images/10.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "8.b.ii",
+    "name": "Ramo cutâneo lateral do nervo intercostal",
+    "desc": "Perfura a parede torácica aproximadamente na região lateral e fornece sensibilidade cutânea.",
+    "loc": "Procure sua emergência na parede lateral do tórax.",
+    "img": "images/10.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "8.b.ii.1",
+    "name": "Ramo anterior do ramo cutâneo lateral",
+    "desc": "CORREÇÃO: o ramo cutâneo lateral divide-se em ramos anterior e posterior.",
+    "loc": "Segue anteriormente a partir do ponto de emergência lateral.",
+    "img": "images/10.jpg",
+    "corrected": true
+  },
+  {
+    "group": "G1",
+    "code": "8.b.ii.2",
+    "name": "Ramo posterior do ramo cutâneo lateral",
+    "desc": "CORREÇÃO: divisão posterior do ramo cutâneo lateral.",
+    "loc": "Segue posteriormente a partir do ponto de emergência lateral.",
+    "img": "images/10.jpg",
+    "corrected": true
+  },
+  {
+    "group": "G1",
+    "code": "8.b.iii",
+    "name": "Ramo cutâneo anterior do nervo intercostal",
+    "desc": "Porção terminal que emerge perto da linha paraesternal e fornece sensibilidade à pele anterior.",
+    "loc": "Procure sua emergência próxima ao esterno.",
+    "img": "images/12.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "8.b.iii.1",
+    "name": "Ramo medial do ramo cutâneo anterior",
+    "desc": "Divisão medial do ramo cutâneo anterior.",
+    "loc": "Segue em direção à linha mediana após emergir anteriormente.",
+    "img": "images/12.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "8.b.iii.2",
+    "name": "Ramo lateral do ramo cutâneo anterior",
+    "desc": "Divisão lateral do ramo cutâneo anterior.",
+    "loc": "Segue lateralmente após a emergência anterior.",
+    "img": "images/12.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "8.c",
+    "name": "Ramo comunicante branco",
+    "desc": "Conecta o nervo espinal ao tronco simpático, conduzindo principalmente fibras simpáticas pré-ganglionares nos níveis em que está presente.",
+    "loc": "Procure uma pequena ponte nervosa entre o nervo espinal/intercostal e o tronco simpático.",
+    "img": "images/11.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "8.d",
+    "name": "Ramo comunicante cinzento",
+    "desc": "Conecta o tronco simpático aos nervos espinais, conduzindo fibras simpáticas pós-ganglionares.",
+    "loc": "Visualize-o como a segunda ponte entre o tronco simpático e o nervo espinal.",
+    "img": "images/11.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "9",
+    "name": "Nervo subcostal (T12)",
+    "desc": "Ramo anterior de T12 que percorre inferiormente a 12ª costela; não é denominado nervo intercostal.",
+    "loc": "Procure abaixo da 12ª costela.",
+    "img": "images/10.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "10",
+    "name": "Nervo peitoral lateral",
+    "desc": "Ramo do fascículo lateral do plexo braquial que inerva principalmente o peitoral maior.",
+    "loc": "Procure na face profunda do peitoral maior, vindo da região axilar.",
+    "img": "images/9.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "11",
+    "name": "Nervo peitoral medial",
+    "desc": "Ramo do fascículo medial que inerva peitoral menor e também peitoral maior.",
+    "loc": "Procure relacionado ao peitoral menor; frequentemente o atravessa para alcançar o maior.",
+    "img": "images/9.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G1",
+    "code": "12",
+    "name": "Nervo torácico longo",
+    "desc": "Nervo de C5–C7 que desce superficialmente sobre o músculo serrátil anterior e o inerva.",
+    "loc": "Procure uma estrutura nervosa longa descendo pela parede lateral sobre o serrátil anterior.",
+    "img": "images/8.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "1",
+    "name": "1ª veia intercostal posterior",
+    "desc": "Veia do primeiro espaço intercostal; drena geralmente diretamente para a veia braquiocefálica do mesmo lado.",
+    "loc": "Procure o vaso mais superior da série de veias intercostais posteriores.",
+    "img": "images/14.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "2",
+    "name": "2ª a 4ª veias intercostais posteriores",
+    "desc": "As veias superiores costumam reunir-se para formar a veia intercostal superior; a 4ª pode apresentar variação.",
+    "loc": "Procure os vasos dos espaços superiores convergindo para um tronco venoso superior.",
+    "img": "images/14.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "3",
+    "name": "Veia intercostal superior direita",
+    "desc": "Recebe principalmente veias intercostais posteriores superiores direitas e geralmente desemboca na veia ázigos.",
+    "loc": "Associe: superior DIREITA → ÁZIGOS.",
+    "img": "images/17.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "4",
+    "name": "Veia intercostal superior esquerda",
+    "desc": "Recebe veias intercostais posteriores superiores esquerdas e geralmente desemboca na veia braquiocefálica esquerda.",
+    "loc": "Associe: superior ESQUERDA → BRAQUIOCEFÁLICA E.",
+    "img": "images/17.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "5",
+    "name": "Plexo venoso vertebral anterior externo",
+    "desc": "Rede venosa situada externamente, anteriormente aos corpos vertebrais, conectada ao sistema venoso vertebral e segmentar.",
+    "loc": "Identifique como plexo venoso externo anterior relacionado à coluna.",
+    "img": "images/13.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "6",
+    "name": "Plexo venoso vertebral anterior interno",
+    "desc": "Rede venosa localizada dentro do canal vertebral, anteriormente ao saco dural.",
+    "loc": "No estudo, memorize AE–AI–PE; este é o componente anterior interno.",
+    "img": "images/13.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "7",
+    "name": "Plexo venoso vertebral posterior externo",
+    "desc": "Rede venosa externa situada posteriormente aos elementos vertebrais.",
+    "loc": "No estudo, memorize AE–AI–PE; este é o posterior externo.",
+    "img": "images/13.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "8",
+    "name": "Veia lombar ascendente esquerda",
+    "desc": "Veia longitudinal que conecta veias lombares e participa da formação da hemiázigos.",
+    "loc": "Procure inferiormente, subindo à esquerda em direção ao tórax.",
+    "img": "images/15.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "9",
+    "name": "Veia subcostal esquerda",
+    "desc": "Veia situada inferiormente à 12ª costela esquerda; participa da formação da hemiázigos.",
+    "loc": "Procure abaixo da 12ª costela esquerda.",
+    "img": "images/15.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "10",
+    "name": "Veia hemiázigos",
+    "desc": "CORREÇÃO DE LATERALIDADE: situa-se à esquerda e recebe tipicamente as veias intercostais posteriores inferiores esquerdas, incluindo 9ª–11ª, antes de cruzar para a ázigos.",
+    "loc": "Procure uma veia longitudinal inferior à esquerda da coluna que cruza para a direita.",
+    "img": "images/13.jpg",
+    "corrected": true
+  },
+  {
+    "group": "G2",
+    "code": "11",
+    "name": "Veias intercostais posteriores (5ª a 8ª)",
+    "desc": "Veias intercostais posteriores médias; à esquerda, frequentemente drenam para a hemiázigos acessória, com variações anatômicas.",
+    "loc": "Procure vasos segmentares horizontais convergindo para o sistema ázigos/hemiázigos.",
+    "img": "images/14.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "12",
+    "name": "Veia hemiázigos acessória",
+    "desc": "Veia longitudinal superior à esquerda da coluna; recebe veias intercostais posteriores médias esquerdas e geralmente cruza para a ázigos.",
+    "loc": "Associe: esquerda superior = hemiázigos ACESSÓRIA.",
+    "img": "images/13.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "13",
+    "name": "Veia lombar ascendente direita",
+    "desc": "Veia longitudinal que participa da formação da veia ázigos.",
+    "loc": "Procure inferiormente no lado direito, subindo em direção ao tórax.",
+    "img": "images/15.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "14",
+    "name": "Veia subcostal direita",
+    "desc": "Veia inferior à 12ª costela direita; participa da formação da ázigos.",
+    "loc": "Procure abaixo da 12ª costela direita.",
+    "img": "images/15.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "15",
+    "name": "Veia ázigos",
+    "desc": "Principal via longitudinal do sistema ázigos, situada predominantemente à direita da coluna; recebe tributárias da parede torácica e forma um arco para desembocar na VCS.",
+    "loc": "Procure à direita dos corpos vertebrais; superiormente siga o arco sobre a raiz pulmonar direita.",
+    "img": "images/16.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "16",
+    "name": "Veias intercostais anteriores",
+    "desc": "Drenam a parede anterior dos espaços intercostais e acompanham as artérias intercostais anteriores.",
+    "loc": "Na parede anterior, procure vasos que convergem para torácicas internas/musculofrênicas.",
+    "img": "images/12.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "17",
+    "name": "Veias musculofrênicas",
+    "desc": "Acompanham a artéria musculofrênica e drenam espaços intercostais inferiores anteriores para o sistema torácico interno.",
+    "loc": "Procure ao longo do rebordo costal.",
+    "img": "images/12.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "18",
+    "name": "Veias epigástricas superiores",
+    "desc": "Ascendem da parede abdominal anterior e drenam para as veias torácicas internas.",
+    "loc": "Procure na bainha do reto abdominal seguindo superiormente.",
+    "img": "images/12.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "19",
+    "name": "Veias torácicas internas",
+    "desc": "Acompanham a artéria torácica interna lateralmente ao esterno e drenam para as veias braquiocefálicas.",
+    "loc": "Procure paralelas ao esterno na face interna da parede anterior.",
+    "img": "images/12.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "20",
+    "name": "Veias mediastinais, esofágicas e bronquiais",
+    "desc": "Pequenas tributárias viscerais do tórax que drenam para grandes veias torácicas, especialmente o sistema ázigos, com variações.",
+    "loc": "Procure pequenos vasos provenientes do mediastino, esôfago e brônquios convergindo para o sistema venoso posterior.",
+    "img": "images/17.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "21",
+    "name": "Veia braquiocefálica direita",
+    "desc": "Formada pela união da jugular interna direita com a subclávia direita; une-se à esquerda para formar a VCS.",
+    "loc": "Procure no mediastino superior, curta e oblíqua, dirigindo-se à VCS.",
+    "img": "images/17.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "22",
+    "name": "Veia braquiocefálica esquerda",
+    "desc": "Formada pela jugular interna esquerda e subclávia esquerda; cruza o mediastino superior para unir-se à direita.",
+    "loc": "Procure uma veia longa atravessando transversalmente o mediastino superior.",
+    "img": "images/17.jpg",
+    "corrected": false
+  },
+  {
+    "group": "G2",
+    "code": "23",
+    "name": "Veia cava superior",
+    "desc": "Grande veia que recebe as braquiocefálicas e o arco da ázigos e conduz sangue ao átrio direito.",
+    "loc": "Procure no mediastino superior direito, descendendo até o coração.",
+    "img": "images/17.jpg",
+    "corrected": false
+  }
+]

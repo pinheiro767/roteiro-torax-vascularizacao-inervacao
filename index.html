@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#264a60">
+<link rel="manifest" href="manifest.json">
+<title>Tórax Imersivo — G1 + G2</title>
+<style>
+:root{--ink:#18313f;--brand:#264a60;--accent:#a92d67;--paper:#fff;--bg:#edf2f4;--muted:#63747e;--ok:#176b4d;--warn:#9a5c00}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,#17394d,#2d6077);color:#fff;padding:14px 16px;box-shadow:0 2px 12px #0003}
+header h1{font-size:1.06rem;margin:0 0 2px} header p{margin:0;font-size:.78rem;opacity:.9}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;padding:10px 12px;background:#fff;border-bottom:1px solid #d9e1e5;position:sticky;top:63px;z-index:9}
+button,.btn{border:0;border-radius:12px;padding:10px 12px;font-weight:700;cursor:pointer;background:#e6edf0;color:#17394d}
+button.primary{background:var(--accent);color:#fff}.tabs button.active{background:var(--brand);color:#fff}
+.search{flex:1;min-width:180px;border:1px solid #ccd8de;border-radius:12px;padding:10px 12px}
+main{max-width:1050px;margin:auto;padding:14px}
+.summary{background:#fff;border-radius:16px;padding:14px;margin-bottom:14px;border-left:5px solid var(--accent);box-shadow:0 2px 10px #0000000d}
+.section-title{display:flex;align-items:center;gap:10px;margin:20px 0 10px}.section-title h2{margin:0}.badge{font-size:.72rem;background:#e8eef2;border-radius:999px;padding:4px 8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.card{background:var(--paper);border-radius:16px;overflow:hidden;box-shadow:0 3px 14px #102d3a12;border:1px solid #dce5e9}
+.card.corrected{border:2px solid #d89b2b}.card-head{padding:12px 14px 8px}.code{font-weight:800;color:var(--accent);font-size:.8rem}.card h3{margin:4px 0 0;font-size:1rem;line-height:1.23}
+.correction{display:inline-block;margin-top:7px;background:#fff3cf;color:#744b00;padding:4px 7px;border-radius:8px;font-size:.72rem;font-weight:800}
+.media{position:relative;background:#0f2028;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.media img{width:100%;height:100%;object-fit:contain}.media.practice img{filter:blur(13px) brightness(.72)}.reveal{position:absolute;inset:auto 10px 10px 10px;background:#ffffffdd;color:#17394d;padding:9px;border-radius:10px;text-align:center;font-weight:800;display:none}
+.media.practice .reveal{display:block}
+.body{padding:12px 14px 14px}.body p{margin:0 0 8px;font-size:.9rem;line-height:1.42}.label{font-weight:800;color:#375768}
+.student{border-top:1px dashed #d4dfe4;padding-top:10px;margin-top:10px}.student img{max-width:100%;max-height:190px;object-fit:contain;border-radius:10px;margin-top:8px;background:#f7f7f7}
+.student-actions{display:flex;gap:7px;flex-wrap:wrap}.small{font-size:.75rem;padding:8px 9px}
+.hidden{display:none!important}
+.modal{position:fixed;inset:0;background:#000b;z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}.modal img{max-width:96vw;max-height:90vh;background:#fff}.modal button{position:absolute;top:18px;right:18px}
+footer{text-align:center;color:var(--muted);font-size:.75rem;padding:30px 12px 50px}
+@media(max-width:640px){.toolbar{top:61px}.grid{grid-template-columns:1fr}.media{aspect-ratio:16/11}}
+@media print{
+ header,.toolbar,.student-actions,.install-note,footer{display:none!important}
+ body{background:white}.summary{box-shadow:none;border:1px solid #bbb}.grid{display:block}.card{box-shadow:none;break-inside:avoid;margin:0 0 12px;border:1px solid #aaa}.media{height:250px;aspect-ratio:auto;background:white}.media.practice img{filter:none}.reveal{display:none!important}
+ main{max-width:none;padding:0}.section-title{break-after:avoid}.student{display:block}
+}
+</style>
+
+<style id="immersive-accessibility">
+:root{
+  --scale:1;
+  --card-depth:16px;
+  --focus:#ffbf47;
+}
+html{scroll-behavior:smooth}
+body{font-size:calc(16px * var(--scale));perspective:1400px}
+.skip-link{position:fixed;left:12px;top:-60px;z-index:999;background:#fff;color:#000;padding:10px 14px;border-radius:10px;font-weight:800}
+.skip-link:focus{top:12px}
+.a11ybar{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.a11ybar button{min-width:42px}
+button:focus-visible,input:focus-visible,.card:focus-visible,.media:focus-visible{outline:4px solid var(--focus);outline-offset:3px}
+.card{
+  transform-style:preserve-3d;
+  transition:transform .25s ease, box-shadow .25s ease;
+  will-change:transform;
+}
+@media (hover:hover) and (pointer:fine){
+ .card:hover{box-shadow:0 18px 34px #102d3a24;transform:translateY(-4px) rotateX(1deg)}
+}
+.card-head,.body{transform:translateZ(var(--card-depth))}
+.media{transform:translateZ(calc(var(--card-depth) * .6));cursor:zoom-in}
+.media img{transition:transform .35s ease, filter .3s ease}
+.media:hover img{transform:scale(1.025)}
+#modal{
+  backdrop-filter:blur(8px);
+  flex-direction:column;
+}
+#modal .zoom-stage{
+  width:min(96vw,1500px);
+  height:min(84vh,1000px);
+  overflow:auto;
+  border-radius:16px;
+  background:#0b151b;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  touch-action:none;
+}
+#modal .zoom-stage img{
+  max-width:none;
+  max-height:none;
+  width:auto;
+  height:auto;
+  transform-origin:center center;
+  transition:transform .15s ease;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.zoom-controls{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+  flex-wrap:wrap;
+  justify-content:center
+}
+.zoom-controls button{background:#fff;color:#17394d}
+.progress-wrap{height:10px;background:#d9e5ea;border-radius:999px;overflow:hidden;flex:1;min-width:160px}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,#a92d67,#2d6077);transition:width .25s}
+.progress-text{font-size:.78rem;font-weight:800;color:#375768}
+.card.done{outline:3px solid #3b9a70}
+.done-btn[aria-pressed="true"]{background:#176b4d;color:#fff}
+.a11y-panel{background:#fff;border-bottom:1px solid #d9e1e5;padding:8px 12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+body.high-contrast{--bg:#000;--paper:#000;--ink:#fff;--muted:#ddd;--brand:#000;--accent:#ffdf00;background:#000;color:#fff}
+body.high-contrast header{background:#000;border-bottom:2px solid #fff}
+body.high-contrast .toolbar,body.high-contrast .a11y-panel,body.high-contrast .summary,body.high-contrast .card{background:#000;color:#fff;border-color:#fff}
+body.high-contrast button,body.high-contrast .btn{background:#fff;color:#000}
+body.high-contrast .search{background:#000;color:#fff;border:2px solid #fff}
+body.high-contrast .label,body.high-contrast .progress-text{color:#fff}
+body.readable{letter-spacing:.035em;word-spacing:.08em;line-height:1.65}
+body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+.card .body p{font-size:.94rem}
+@media(max-width:900px){
+ header{position:relative}
+ .toolbar{top:0;position:sticky}
+ .a11y-panel{position:static}
+}
+@media(max-width:640px){
+ .toolbar{position:static}
+ .toolbar>*{width:100%}
+ .tabs{display:grid;grid-template-columns:repeat(3,1fr);width:100%}
+ .tabs button{width:100%}
+ .a11y-panel{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .progress-wrap,.progress-text{grid-column:1/-1}
+ .grid{gap:16px}
+ .card{border-radius:20px}
+ .media{aspect-ratio:4/3}
+}
+@media(prefers-reduced-motion:reduce){
+ *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+
+
+<style id="zoom-fix">
+#modal{padding:14px;display:flex;flex-direction:column;gap:10px}
+#modal > button{
+  position:fixed!important;top:14px!important;right:14px!important;z-index:70!important;
+  background:#fff!important;color:#17394d!important;box-shadow:0 2px 10px #0005
+}
+#modal .zoom-controls{
+  position:relative!important;
+  display:flex!important;gap:8px!important;z-index:65!important;
+  background:#132a36e8;padding:8px 10px;border-radius:14px
+}
+#modal .zoom-controls button{
+  position:static!important;
+  min-width:82px;
+}
+#zoomPct{color:#fff;font-weight:800;min-width:64px;text-align:center;align-self:center}
+#zoomStage{
+  position:relative;
+  width:min(96vw,1500px)!important;
+  height:min(82vh,950px)!important;
+  overflow:auto!important;
+  align-items:flex-start!important;
+  justify-content:flex-start!important;
+  cursor:grab;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-x pan-y pinch-zoom;
+}
+#zoomStage:active{cursor:grabbing}
+#zoomStage #modalImg{
+  display:block!important;
+  margin:auto!important;
+  max-width:none!important;
+  max-height:none!important;
+  transform:none!important;
+  flex:0 0 auto!important;
+}
+@media(max-width:640px){
+ #modal{padding:8px}
+ #zoomStage{width:98vw!important;height:78vh!important}
+ #modal .zoom-controls button{min-width:64px;padding:9px 8px}
+}
+</style>
+
+
+<style id="modern-ui">
+:root{
+  --surface:#ffffffcc;
+  --surface-strong:#ffffff;
+  --glass:rgba(255,255,255,.72);
+  --line:rgba(23,57,77,.12);
+  --shadow:0 18px 50px rgba(18,48,64,.10);
+  --shadow-soft:0 8px 24px rgba(18,48,64,.08);
+  --radius-xl:24px;
+}
+body{
+  background:
+    radial-gradient(circle at 12% 5%, rgba(169,45,103,.08), transparent 24%),
+    radial-gradient(circle at 88% 8%, rgba(45,96,119,.12), transparent 28%),
+    linear-gradient(180deg,#f7fafb 0%,#eef4f6 100%);
+}
+header{
+  background:linear-gradient(135deg,rgba(18,52,70,.97),rgba(39,92,116,.95));
+  backdrop-filter:blur(12px);
+  padding:18px 22px;
+}
+header h1{font-size:1.22rem;letter-spacing:.01em}
+header p{font-size:.82rem}
+.toolbar{
+  margin:12px auto 0;
+  max-width:1180px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:var(--shadow-soft);
+  backdrop-filter:blur(12px);
+  background:var(--glass);
+}
+.a11y-panel{
+  max-width:1180px;
+  margin:8px auto 0;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:var(--glass);
+  backdrop-filter:blur(12px);
+  box-shadow:var(--shadow-soft);
+}
+main{max-width:1180px;padding:18px}
+.summary{
+  background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(250,252,253,.82));
+  border:1px solid var(--line);
+  border-left:0;
+  border-radius:var(--radius-xl);
+  box-shadow:var(--shadow-soft);
+  padding:18px 20px;
+}
+.grid{
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:18px;
+}
+.card{
+  border:1px solid rgba(18,55,75,.09);
+  border-radius:22px;
+  overflow:hidden;
+  background:linear-gradient(160deg,rgba(255,255,255,.98),rgba(248,251,252,.95));
+  box-shadow:var(--shadow-soft);
+}
+.card:hover{box-shadow:var(--shadow)}
+.card-head{padding:16px 16px 10px}
+.card h3{font-size:1.05rem}
+.code{
+  display:inline-flex;align-items:center;
+  background:#edf3f6;border-radius:999px;padding:5px 8px;
+}
+.media{
+  margin:0 12px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:inset 0 0 0 1px #ffffff12;
+}
+.body{padding:14px 16px 18px}
+.body p{font-size:.92rem}
+.student{
+  background:#f7fafb;
+  border:1px dashed #cad8de;
+  padding:12px;
+  border-radius:14px;
+  margin-top:12px;
+}
+button,.btn{
+  border-radius:14px;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+button:hover,.btn:hover{transform:translateY(-1px);box-shadow:0 5px 14px #17394d12}
+button.primary{
+  background:linear-gradient(135deg,#a92d67,#c3437c);
+  box-shadow:0 8px 18px rgba(169,45,103,.22);
+}
+#imageToggleBtn.active-hide{
+  background:#17394d;color:white;
+}
+.card.images-hidden .media{display:none!important}
+.card.images-hidden .student img{display:none!important}
+.card.images-hidden .student .label::after{
+  content:" • imagens ocultas";
+  font-weight:600;
+  color:#7a8a92;
+}
+.card .card-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+.card .toggle-card-image[aria-pressed="true"]{
+  background:#17394d;color:#fff;
+}
+.section-title{
+  padding:8px 2px;
+}
+.section-title h2{
+  font-size:1.15rem;
+}
+.modern-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.72rem;font-weight:800;
+  background:linear-gradient(135deg,#eef4f7,#e4eef2);
+  border:1px solid var(--line);
+  border-radius:999px;padding:5px 9px;color:#315568
+}
+@media(max-width:640px){
+  header{padding:16px}
+  main{padding:12px}
+  .toolbar,.a11y-panel{margin-left:8px;margin-right:8px}
+  .grid{grid-template-columns:1fr;gap:14px}
+  .card{border-radius:20px}
+  .media{margin:0 10px}
+  .summary{border-radius:18px}
+}
+</style>
+
+
+<style id="zoom-final-fix">
+#modal.modal{
+  position:fixed!important;inset:0!important;z-index:9999!important;
+  display:grid!important;grid-template-rows:58px minmax(0,1fr) 70px!important;
+  background:rgba(4,14,20,.95)!important;backdrop-filter:blur(10px)!important;
+  padding:0!important;align-items:stretch!important;justify-content:stretch!important;
+}
+#modal.hidden{display:none!important}
+#modal > button{
+  position:static!important;justify-self:end!important;align-self:center!important;
+  margin-right:16px!important;z-index:10001!important;background:#fff!important;
+  color:#163443!important;border-radius:14px!important;padding:10px 16px!important;
+  box-shadow:0 6px 18px #0005!important;
+}
+#zoomStage{
+  grid-row:2!important;width:100%!important;height:100%!important;min-height:0!important;
+  overflow:auto!important;display:block!important;background:#08151b!important;
+  border-radius:0!important;padding:18px!important;box-sizing:border-box!important;
+  touch-action:pan-x pan-y!important;-webkit-overflow-scrolling:touch!important;text-align:center!important;
+}
+#zoomStage #modalImg{
+  display:inline-block!important;max-width:none!important;max-height:none!important;
+  margin:0 auto!important;transform:none!important;object-fit:contain!important;
+  user-select:none!important;-webkit-user-drag:none!important;vertical-align:top!important;
+}
+#modal .zoom-controls{
+  grid-row:3!important;position:static!important;display:flex!important;align-items:center!important;
+  justify-content:center!important;gap:10px!important;margin:0!important;padding:10px 12px!important;
+  background:rgba(13,35,46,.98)!important;z-index:10001!important;
+}
+#modal .zoom-controls button{
+  position:static!important;min-width:88px!important;background:#fff!important;color:#17394d!important;
+  padding:10px 12px!important;
+}
+#zoomPct{color:#fff!important;min-width:68px!important;font-weight:900!important;text-align:center!important}
+@media(max-width:600px){
+  #modal.modal{grid-template-rows:52px minmax(0,1fr) 64px!important}
+  #zoomStage{padding:8px!important}
+  #modal .zoom-controls{gap:6px!important;padding:8px!important}
+  #modal .zoom-controls button{min-width:68px!important;padding:9px 8px!important;font-size:.82rem!important}
+}
+</style>
+
+</head>
+<body><a class="skip-link" href="#content">Pular para o conteúdo</a>
+<header><h1>TÓRAX IMERSIVO — G1 + G2</h1><p>Roteiro prático • nomenclatura revisada • peça anatômica • modo prática</p></header>
+<div class="toolbar" role="navigation" aria-label="Filtros e ferramentas">
+  <div class="tabs" role="tablist" aria-label="Grupos"><button id="allBtn" class="active" role="tab" aria-selected="true">Todos</button><button id="g1Btn" role="tab" aria-selected="false">G1</button><button id="g2Btn" role="tab" aria-selected="false">G2</button></div>
+  <input id="search" class="search" aria-label="Buscar estrutura" placeholder="Buscar estrutura...">
+  <button id="practiceBtn" aria-pressed="false">Modo prática</button>
+  <button id="imageToggleBtn" aria-pressed="false">Ocultar imagens</button>
+  <button id="pdfBtn" class="primary">Gerar PDF</button>
+</div>
+<div class="a11y-panel" aria-label="Acessibilidade">
+  <div class="a11ybar">
+    <button id="fontDown" aria-label="Diminuir fonte">A−</button>
+    <button id="fontUp" aria-label="Aumentar fonte">A+</button>
+    <button id="contrastBtn" aria-pressed="false">Alto contraste</button>
+    <button id="readableBtn" aria-pressed="false">Leitura confortável</button>
+    <button id="motionBtn" aria-pressed="false">Reduzir movimento</button>
+    <button id="speakBtn">🔊 Ler card</button>
+  </div>
+  <div class="progress-wrap" aria-label="Progresso de estudo"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-text" id="progressText">0% concluído</div>
+</div>
+<main id="mainContent" tabindex="-1">
+<section class="summary">
+<b>Como usar:</b> cada item segue a ordem do roteiro. As nomenclaturas corrigidas já aparecem na forma recomendada para estudo. Toque na imagem para ampliar. Use <b>Ocultar imagens</b> para treinar apenas pela nomenclatura e explicações. O aluno pode anexar uma imagem própria em cada estrutura; ela fica salva neste dispositivo. Em <b>Gerar PDF</b>, escolha “Salvar como PDF” na janela de impressão.
+</section>
+<div id="content"></div>
+</main>
+<footer>Material de estudo G1/G2 • imagens fornecidas pela usuária • dados pessoais anexados pelo aluno permanecem apenas no navegador deste dispositivo.</footer>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Visualização ampliada">
+      <button onclick="closeModal()" aria-label="Fechar imagem ampliada">Fechar</button>
+      <div class="zoom-stage" id="zoomStage"><img id="modalImg" alt=""></div>
+      <div class="zoom-controls" aria-label="Controles de zoom">
+        <button onclick="zoomOut()" aria-label="Diminuir zoom">− Zoom</button>
+        <button onclick="resetZoom()" aria-label="Restaurar zoom">100%</button>
+        <span id="zoomPct" aria-live="polite">100%</span>
+        <button onclick="zoomIn()" aria-label="Aumentar zoom">+ Zoom</button>
+      </div>
+    </div>
+<script>
+let DATA=[{"group": "G1", "code": "1", "name": "Aorta", "desc": "Grande artéria sistêmica que recebe o sangue do ventrículo esquerdo e distribui-o para o organismo.", "loc": "No tórax, identifique o grande vaso arterial de parede espessa relacionado ao arco aórtico e à aorta descendente.", "img": "images/1.jpg", "corrected": false}, {"group": "G1", "code": "1.a", "name": "Parte torácica da aorta", "desc": "Porção descendente da aorta situada no mediastino posterior; origina ramos viscerais e parietais, incluindo artérias intercostais posteriores.", "loc": "Procure à esquerda dos corpos vertebrais torácicos, descendendo em direção ao hiato aórtico.", "img": "images/2.jpg", "corrected": false}, {"group": "G1", "code": "2", "name": "Artérias intercostais posteriores", "desc": "Irrigam a parede torácica posterior e lateral. A 1ª e a 2ª geralmente vêm da artéria intercostal suprema; da 3ª à 11ª, da aorta torácica.", "loc": "Procure vasos arteriais seguindo os espaços intercostais a partir da região posterior.", "img": "images/3.jpg", "corrected": false}, {"group": "G1", "code": "2.a", "name": "Ramo dorsal da artéria intercostal posterior", "desc": "Ramo que segue posteriormente para estruturas do dorso e emite ramo espinal para o canal vertebral.", "loc": "Localize-o próximo à origem da artéria intercostal posterior, dirigindo-se para trás junto à coluna.", "img": "images/4.jpg", "corrected": false}, {"group": "G1", "code": "2.b", "name": "Ramo colateral da artéria intercostal posterior", "desc": "Ramo que acompanha a margem superior da costela inferior, complementando o suprimento do espaço intercostal.", "loc": "Use a regra espacial: feixe principal embaixo da costela de cima; colateral em cima da costela de baixo.", "img": "images/4.jpg", "corrected": false}, {"group": "G1", "code": "2.c", "name": "Ramo cutâneo lateral", "desc": "Ramo que emerge lateralmente pela parede torácica para pele e tecido subcutâneo.", "loc": "Procure sua saída na região lateral do espaço intercostal.", "img": "images/4.jpg", "corrected": false}, {"group": "G1", "code": "2.c.i", "name": "Ramos mamários laterais", "desc": "Ramos destinados à porção lateral da mama, derivados de ramos cutâneos laterais das artérias intercostais posteriores.", "loc": "Na mama, procure vasos que chegam pela região lateral.", "img": "images/5.jpg", "corrected": false}, {"group": "G1", "code": "3", "name": "Artéria subcostal", "desc": "Ramo parietal da aorta torácica que percorre inferiormente a 12ª costela.", "loc": "Procure imediatamente abaixo da 12ª costela; não ocupa um espaço intercostal.", "img": "images/6.jpg", "corrected": false}, {"group": "G1", "code": "4", "name": "Artéria axilar", "desc": "Continuação da artéria subclávia após a margem lateral da 1ª costela; irriga axila e membro superior.", "loc": "Na axila, procure o grande vaso arterial cercado pelos fascículos do plexo braquial.", "img": "images/7.jpg", "corrected": false}, {"group": "G1", "code": "4.a", "name": "Artéria torácica superior", "desc": "Pequeno ramo da primeira porção da artéria axilar que irriga regiões superiores da parede torácica.", "loc": "Procure um ramo curto e superior próximo à primeira porção da axilar.", "img": "images/7.jpg", "corrected": false}, {"group": "G1", "code": "4.b", "name": "Artéria torácica lateral", "desc": "Ramo da artéria axilar que desce pela parede lateral do tórax, acompanhando a borda lateral do peitoral menor e irrigando serrátil anterior e mama.", "loc": "Procure um vaso descendente na parede lateral da axila.", "img": "images/5.jpg", "corrected": false}, {"group": "G1", "code": "5", "name": "Artéria subclávia", "desc": "Artéria da raiz do pescoço que continua como artéria axilar após a 1ª costela.", "loc": "Procure profundamente à clavícula, superior à 1ª costela.", "img": "images/7.jpg", "corrected": false}, {"group": "G1", "code": "5.a", "name": "Tronco costocervical", "desc": "Ramo da artéria subclávia que dá origem, entre outros, à artéria intercostal suprema.", "loc": "Procure na região posterior da subclávia, próximo ao colo da 1ª costela.", "img": "images/18.jpg", "corrected": false}, {"group": "G1", "code": "5.a.i", "name": "Artéria intercostal suprema", "desc": "Ramo do tronco costocervical que participa da irrigação dos dois primeiros espaços intercostais posteriores.", "loc": "Associe: SUPREMA = superior = 1º e 2º espaços posteriores.", "img": "images/18.jpg", "corrected": false}, {"group": "G1", "code": "5.a.ii", "name": "1ª e 2ª artérias intercostais posteriores", "desc": "CORREÇÃO: são posteriores, não anteriores. Originam-se geralmente da artéria intercostal suprema.", "loc": "Procure os dois primeiros espaços intercostais posteriores, superiores aos ramos diretos da aorta.", "img": "images/18.jpg", "corrected": true}, {"group": "G1", "code": "5.b", "name": "Artéria torácica interna", "desc": "Ramo da subclávia que desce na parede anterior do tórax, lateral ao esterno.", "loc": "Procure na face interna da parede anterior, paralela ao esterno.", "img": "images/5.jpg", "corrected": false}, {"group": "G1", "code": "5.b.i", "name": "Artérias intercostais anteriores (1ª à 6ª)", "desc": "Ramos da artéria torácica interna para os seis primeiros espaços intercostais.", "loc": "Na parede anterior, acompanhe os ramos que saem lateralmente da torácica interna.", "img": "images/5.jpg", "corrected": false}, {"group": "G1", "code": "5.b.ii", "name": "Ramos mamários mediais", "desc": "Ramos da torácica interna que alcançam a mama pelo lado medial.", "loc": "Associe: interna perto do esterno → mamários mediais.", "img": "images/5.jpg", "corrected": false}, {"group": "G1", "code": "5.b.iii", "name": "Ramos perfurantes", "desc": "Ramos da torácica interna que atravessam os espaços intercostais e alcançam tecidos superficiais.", "loc": "Procure pequenos vasos atravessando a parede anterior perto do esterno.", "img": "images/5.jpg", "corrected": false}, {"group": "G1", "code": "5.b.iv", "name": "Ramos esternais", "desc": "Pequenos ramos destinados ao esterno e tecidos adjacentes.", "loc": "Procure ramos curtos dirigidos medialmente em direção ao esterno.", "img": "images/5.jpg", "corrected": false}, {"group": "G1", "code": "5.c", "name": "Artéria musculofrênica", "desc": "Ramo terminal da artéria torácica interna que acompanha o rebordo costal e origina intercostais anteriores inferiores.", "loc": "Procure ao longo do arco costal, seguindo inferolateralmente.", "img": "images/6.jpg", "corrected": false}, {"group": "G1", "code": "5.c.i", "name": "Artérias intercostais anteriores (7ª à 9ª)", "desc": "Ramos da musculofrênica para os 7º, 8º e 9º espaços intercostais.", "loc": "Associe: 1–6 torácica interna; 7–9 musculofrênica.", "img": "images/6.jpg", "corrected": false}, {"group": "G1", "code": "5.d", "name": "Artéria epigástrica superior", "desc": "Ramo terminal da torácica interna que entra na parede abdominal anterior e anastomosa com a epigástrica inferior.", "loc": "Procure descendo da torácica interna para a bainha do reto abdominal.", "img": "images/12.jpg", "corrected": false}, {"group": "G1", "code": "6", "name": "Feixe vásculo-nervoso intercostal principal", "desc": "Conjunto formado por veia, artéria e nervo intercostais, disposto no sulco costal em ordem V-A-N de superior para inferior.", "loc": "Procure na margem inferior da costela superior, entre intercostal interno e íntimo.", "img": "images/12.jpg", "corrected": false}, {"group": "G1", "code": "7", "name": "Feixe vásculo-nervoso intercostal colateral", "desc": "Ramo colateral menor que percorre a margem superior da costela inferior.", "loc": "Compare com o principal: colateral = borda superior da costela de baixo.", "img": "images/10.jpg", "corrected": false}, {"group": "G1", "code": "8", "name": "Nervos intercostais (T1–T11)", "desc": "CORREÇÃO: a denominação adequada é nervos intercostais T1–T11. São os ramos anteriores dos nervos espinais torácicos.", "loc": "Procure o componente mais inferior do feixe VAN no espaço intercostal.", "img": "images/10.jpg", "corrected": true}, {"group": "G1", "code": "8.a", "name": "Ramo posterior do nervo espinal torácico", "desc": "CORREÇÃO DE HIERARQUIA: o ramo posterior pertence ao nervo espinal torácico; não é um 'nervo intercostal posterior'. Inerva estruturas do dorso.", "loc": "Procure-o dirigindo-se posteriormente logo após a saída do nervo espinal.", "img": "images/11.jpg", "corrected": true}, {"group": "G1", "code": "8.b", "name": "Ramo anterior do nervo espinal torácico = nervo intercostal", "desc": "O ramo anterior de T1–T11 segue no espaço intercostal e constitui o nervo intercostal.", "loc": "Acompanhe o nervo lateralmente entre os músculos intercostais interno e íntimo.", "img": "images/10.jpg", "corrected": false}, {"group": "G1", "code": "8.b.i", "name": "Ramo colateral do nervo intercostal", "desc": "Ramo que surge próximo ao ângulo da costela e segue pela margem superior da costela inferior.", "loc": "Compare visualmente tronco principal e ramo colateral.", "img": "images/10.jpg", "corrected": false}, {"group": "G1", "code": "8.b.ii", "name": "Ramo cutâneo lateral do nervo intercostal", "desc": "Perfura a parede torácica aproximadamente na região lateral e fornece sensibilidade cutânea.", "loc": "Procure sua emergência na parede lateral do tórax.", "img": "images/10.jpg", "corrected": false}, {"group": "G1", "code": "8.b.ii.1", "name": "Ramo anterior do ramo cutâneo lateral", "desc": "CORREÇÃO: o ramo cutâneo lateral divide-se em ramos anterior e posterior.", "loc": "Segue anteriormente a partir do ponto de emergência lateral.", "img": "images/10.jpg", "corrected": true}, {"group": "G1", "code": "8.b.ii.2", "name": "Ramo posterior do ramo cutâneo lateral", "desc": "CORREÇÃO: divisão posterior do ramo cutâneo lateral.", "loc": "Segue posteriormente a partir do ponto de emergência lateral.", "img": "images/10.jpg", "corrected": true}, {"group": "G1", "code": "8.b.iii", "name": "Ramo cutâneo anterior do nervo intercostal", "desc": "Porção terminal que emerge perto da linha paraesternal e fornece sensibilidade à pele anterior.", "loc": "Procure sua emergência próxima ao esterno.", "img": "images/12.jpg", "corrected": false}, {"group": "G1", "code": "8.b.iii.1", "name": "Ramo medial do ramo cutâneo anterior", "desc": "Divisão medial do ramo cutâneo anterior.", "loc": "Segue em direção à linha mediana após emergir anteriormente.", "img": "images/12.jpg", "corrected": false}, {"group": "G1", "code": "8.b.iii.2", "name": "Ramo lateral do ramo cutâneo anterior", "desc": "Divisão lateral do ramo cutâneo anterior.", "loc": "Segue lateralmente após a emergência anterior.", "img": "images/12.jpg", "corrected": false}, {"group": "G1", "code": "8.c", "name": "Ramo comunicante branco", "desc": "Conecta o nervo espinal ao tronco simpático, conduzindo principalmente fibras simpáticas pré-ganglionares nos níveis em que está presente.", "loc": "Procure uma pequena ponte nervosa entre o nervo espinal/intercostal e o tronco simpático.", "img": "images/11.jpg", "corrected": false}, {"group": "G1", "code": "8.d", "name": "Ramo comunicante cinzento", "desc": "Conecta o tronco simpático aos nervos espinais, conduzindo fibras simpáticas pós-ganglionares.", "loc": "Visualize-o como a segunda ponte entre o tronco simpático e o nervo espinal.", "img": "images/11.jpg", "corrected": false}, {"group": "G1", "code": "9", "name": "Nervo subcostal (T12)", "desc": "Ramo anterior de T12 que percorre inferiormente a 12ª costela; não é denominado nervo intercostal.", "loc": "Procure abaixo da 12ª costela.", "img": "images/10.jpg", "corrected": false}, {"group": "G1", "code": "10", "name": "Nervo peitoral lateral", "desc": "Ramo do fascículo lateral do plexo braquial que inerva principalmente o peitoral maior.", "loc": "Procure na face profunda do peitoral maior, vindo da região axilar.", "img": "images/9.jpg", "corrected": false}, {"group": "G1", "code": "11", "name": "Nervo peitoral medial", "desc": "Ramo do fascículo medial que inerva peitoral menor e também peitoral maior.", "loc": "Procure relacionado ao peitoral menor; frequentemente o atravessa para alcançar o maior.", "img": "images/9.jpg", "corrected": false}, {"group": "G1", "code": "12", "name": "Nervo torácico longo", "desc": "Nervo de C5–C7 que desce superficialmente sobre o músculo serrátil anterior e o inerva.", "loc": "Procure uma estrutura nervosa longa descendo pela parede lateral sobre o serrátil anterior.", "img": "images/8.jpg", "corrected": false}, {"group": "G2", "code": "1", "name": "1ª veia intercostal posterior", "desc": "Veia do primeiro espaço intercostal; drena geralmente diretamente para a veia braquiocefálica do mesmo lado.", "loc": "Procure o vaso mais superior da série de veias intercostais posteriores.", "img": "images/14.jpg", "corrected": false}, {"group": "G2", "code": "2", "name": "2ª a 4ª veias intercostais posteriores", "desc": "As veias superiores costumam reunir-se para formar a veia intercostal superior; a 4ª pode apresentar variação.", "loc": "Procure os vasos dos espaços superiores convergindo para um tronco venoso superior.", "img": "images/14.jpg", "corrected": false}, {"group": "G2", "code": "3", "name": "Veia intercostal superior direita", "desc": "Recebe principalmente veias intercostais posteriores superiores direitas e geralmente desemboca na veia ázigos.", "loc": "Associe: superior DIREITA → ÁZIGOS.", "img": "images/17.jpg", "corrected": false}, {"group": "G2", "code": "4", "name": "Veia intercostal superior esquerda", "desc": "Recebe veias intercostais posteriores superiores esquerdas e geralmente desemboca na veia braquiocefálica esquerda.", "loc": "Associe: superior ESQUERDA → BRAQUIOCEFÁLICA E.", "img": "images/17.jpg", "corrected": false}, {"group": "G2", "code": "5", "name": "Plexo venoso vertebral anterior externo", "desc": "Rede venosa situada externamente, anteriormente aos corpos vertebrais, conectada ao sistema venoso vertebral e segmentar.", "loc": "Identifique como plexo venoso externo anterior relacionado à coluna.", "img": "images/13.jpg", "corrected": false}, {"group": "G2", "code": "6", "name": "Plexo venoso vertebral anterior interno", "desc": "Rede venosa localizada dentro do canal vertebral, anteriormente ao saco dural.", "loc": "No estudo, memorize AE–AI–PE; este é o componente anterior interno.", "img": "images/13.jpg", "corrected": false}, {"group": "G2", "code": "7", "name": "Plexo venoso vertebral posterior externo", "desc": "Rede venosa externa situada posteriormente aos elementos vertebrais.", "loc": "No estudo, memorize AE–AI–PE; este é o posterior externo.", "img": "images/13.jpg", "corrected": false}, {"group": "G2", "code": "8", "name": "Veia lombar ascendente esquerda", "desc": "Veia longitudinal que conecta veias lombares e participa da formação da hemiázigos.", "loc": "Procure inferiormente, subindo à esquerda em direção ao tórax.", "img": "images/15.jpg", "corrected": false}, {"group": "G2", "code": "9", "name": "Veia subcostal esquerda", "desc": "Veia situada inferiormente à 12ª costela esquerda; participa da formação da hemiázigos.", "loc": "Procure abaixo da 12ª costela esquerda.", "img": "images/15.jpg", "corrected": false}, {"group": "G2", "code": "10", "name": "Veia hemiázigos", "desc": "CORREÇÃO DE LATERALIDADE: situa-se à esquerda e recebe tipicamente as veias intercostais posteriores inferiores esquerdas, incluindo 9ª–11ª, antes de cruzar para a ázigos.", "loc": "Procure uma veia longitudinal inferior à esquerda da coluna que cruza para a direita.", "img": "images/13.jpg", "corrected": true}, {"group": "G2", "code": "11", "name": "Veias intercostais posteriores (5ª a 8ª)", "desc": "Veias intercostais posteriores médias; à esquerda, frequentemente drenam para a hemiázigos acessória, com variações anatômicas.", "loc": "Procure vasos segmentares horizontais convergindo para o sistema ázigos/hemiázigos.", "img": "images/14.jpg", "corrected": false}, {"group": "G2", "code": "12", "name": "Veia hemiázigos acessória", "desc": "Veia longitudinal superior à esquerda da coluna; recebe veias intercostais posteriores médias esquerdas e geralmente cruza para a ázigos.", "loc": "Associe: esquerda superior = hemiázigos ACESSÓRIA.", "img": "images/13.jpg", "corrected": false}, {"group": "G2", "code": "13", "name": "Veia lombar ascendente direita", "desc": "Veia longitudinal que participa da formação da veia ázigos.", "loc": "Procure inferiormente no lado direito, subindo em direção ao tórax.", "img": "images/15.jpg", "corrected": false}, {"group": "G2", "code": "14", "name": "Veia subcostal direita", "desc": "Veia inferior à 12ª costela direita; participa da formação da ázigos.", "loc": "Procure abaixo da 12ª costela direita.", "img": "images/15.jpg", "corrected": false}, {"group": "G2", "code": "15", "name": "Veia ázigos", "desc": "Principal via longitudinal do sistema ázigos, situada predominantemente à direita da coluna; recebe tributárias da parede torácica e forma um arco para desembocar na VCS.", "loc": "Procure à direita dos corpos vertebrais; superiormente siga o arco sobre a raiz pulmonar direita.", "img": "images/16.jpg", "corrected": false}, {"group": "G2", "code": "16", "name": "Veias intercostais anteriores", "desc": "Drenam a parede anterior dos espaços intercostais e acompanham as artérias intercostais anteriores.", "loc": "Na parede anterior, procure vasos que convergem para torácicas internas/musculofrênicas.", "img": "images/12.jpg", "corrected": false}, {"group": "G2", "code": "17", "name": "Veias musculofrênicas", "desc": "Acompanham a artéria musculofrênica e drenam espaços intercostais inferiores anteriores para o sistema torácico interno.", "loc": "Procure ao longo do rebordo costal.", "img": "images/12.jpg", "corrected": false}, {"group": "G2", "code": "18", "name": "Veias epigástricas superiores", "desc": "Ascendem da parede abdominal anterior e drenam para as veias torácicas internas.", "loc": "Procure na bainha do reto abdominal seguindo superiormente.", "img": "images/12.jpg", "corrected": false}, {"group": "G2", "code": "19", "name": "Veias torácicas internas", "desc": "Acompanham a artéria torácica interna lateralmente ao esterno e drenam para as veias braquiocefálicas.", "loc": "Procure paralelas ao esterno na face interna da parede anterior.", "img": "images/12.jpg", "corrected": false}, {"group": "G2", "code": "20", "name": "Veias mediastinais, esofágicas e bronquiais", "desc": "Pequenas tributárias viscerais do tórax que drenam para grandes veias torácicas, especialmente o sistema ázigos, com variações.", "loc": "Procure pequenos vasos provenientes do mediastino, esôfago e brônquios convergindo para o sistema venoso posterior.", "img": "images/17.jpg", "corrected": false}, {"group": "G2", "code": "21", "name": "Veia braquiocefálica direita", "desc": "Formada pela união da jugular interna direita com a subclávia direita; une-se à esquerda para formar a VCS.", "loc": "Procure no mediastino superior, curta e oblíqua, dirigindo-se à VCS.", "img": "images/17.jpg", "corrected": false}, {"group": "G2", "code": "22", "name": "Veia braquiocefálica esquerda", "desc": "Formada pela jugular interna esquerda e subclávia esquerda; cruza o mediastino superior para unir-se à direita.", "loc": "Procure uma veia longa atravessando transversalmente o mediastino superior.", "img": "images/17.jpg", "corrected": false}, {"group": "G2", "code": "23", "name": "Veia cava superior", "desc": "Grande veia que recebe as braquiocefálicas e o arco da ázigos e conduz sangue ao átrio direito.", "loc": "Procure no mediastino superior direito, descendendo até o coração.", "img": "images/17.jpg", "corrected": false}], filter='ALL', practice=false;
+let db=null;
+try{
+ const dbReq=indexedDB.open('toraxAlunoDB',1);
+ dbReq.onupgradeneeded=e=>{db=e.target.result;if(!db.objectStoreNames.contains('imgs'))db.createObjectStore('imgs')};
+ dbReq.onsuccess=e=>{db=e.target.result};
+}catch(e){console.warn('IndexedDB indisponível',e)};
+render();
+
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function getStudent(key,cb){
+ if(db){let tx=db.transaction('imgs','readonly').objectStore('imgs').get(key);tx.onsuccess=()=>cb(tx.result||localStorage.getItem('thorax-'+key)||null)}
+ else cb(localStorage.getItem('thorax-'+key)||null)
+}
+function saveStudent(key,data){
+ try{localStorage.setItem('thorax-'+key,data)}catch(e){}
+ if(db){let tx=db.transaction('imgs','readwrite');tx.objectStore('imgs').put(data,key);tx.oncomplete=render}else render()
+}
+function delStudent(key){
+ try{localStorage.removeItem('thorax-'+key)}catch(e){}
+ if(db){let tx=db.transaction('imgs','readwrite');tx.objectStore('imgs').delete(key);tx.oncomplete=render}else render()
+}
+function section(group,items){
+ return `<div class="section-title"><h2>${group}</h2><span class="badge">${items.length} terminologias</span></div><div class="grid">${items.map(card).join('')}</div>`
+}
+function card(x){
+ const key=x.group+'-'+x.code.replaceAll('.','_');
+ const done=isDone(key);
+ return `<article id="card-${key}" class="card ${x.corrected?'corrected':''} ${done?'done':''}" tabindex="0" data-key="${key}" data-name="${esc((x.name+' '+x.code).toLowerCase())}">
+ <div class="card-head"><span class="code">${x.group} • ${esc(x.code)}</span><h3>${esc(x.name)}</h3>${x.corrected?'<span class="correction">NOMENCLATURA CORRIGIDA</span>':''}</div>
+ <div class="media ${practice?'practice':''}" tabindex="0" role="button" aria-label="Ampliar imagem de ${esc(x.name)}" onclick="openModal('${x.img}','${esc(x.name)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openModal('${x.img}','${esc(x.name)}')}"><img loading="lazy" src="${x.img}" alt="Imagem anatômica: ${esc(x.name)}"><div class="reveal">Toque para ampliar • tente identificar antes</div></div>
+ <div class="body"><p><span class="label">Explicação:</span> ${esc(x.desc)}</p><p><span class="label">Na peça:</span> ${esc(x.loc)}</p>
+ <div class="card-actions">
+ <button class="small done-btn" aria-pressed="${done}" onclick="toggleDone('${key}')">${done?'✓ Memorizado':'Marcar como memorizado'}</button>
+ <button class="small toggle-card-image" aria-pressed="false" onclick="toggleCardImage('${key}',this)">Ocultar imagem</button>
+ </div>
+ <div class="student"><div class="label">Imagem própria do aluno</div><div class="student-actions">
+ <label class="btn small">Anexar imagem<input class="hidden" type="file" accept="image/*" capture="environment" onchange="uploadStudent('${key}',this)"></label>
+ <button class="small" onclick="delStudent('${key}')">Remover</button></div><div id="student-${key}"></div></div></div></article>`
+}
+function render(){
+ if(!DATA.length)return;
+ let q=document.getElementById('search').value.trim().toLowerCase();
+ let d=DATA.filter(x=>(filter==='ALL'||x.group===filter)&&(!q||(x.name+' '+x.code+' '+x.desc).toLowerCase().includes(q)));
+ let html='';
+ for(const g of ['G1','G2']){let a=d.filter(x=>x.group===g);if(a.length)html+=section(g,a)}
+ document.getElementById('content').innerHTML=html||'<div class="summary">Nenhuma estrutura encontrada.</div>';
+ d.forEach(x=>{const key=x.group+'-'+x.code.replaceAll('.','_');getStudent(key,val=>{let el=document.getElementById('student-'+key);if(el&&val)el.innerHTML=`<img src="${val}" alt="Imagem própria">`})})
+}
+function uploadStudent(key,input){
+ let f=input.files&&input.files[0]; if(!f)return;
+ let reader=new FileReader(); reader.onload=()=>saveStudent(key,reader.result); reader.readAsDataURL(f)
+}
+let zoomLevel=1, zoomBaseW=0, zoomBaseH=0;
+
+function fitModalImage(){
+  const stage=document.getElementById('zoomStage');
+  const img=document.getElementById('modalImg');
+  if(!img.naturalWidth || !img.naturalHeight) return;
+  const availableW=Math.max(160,stage.clientWidth-36);
+  const availableH=Math.max(160,stage.clientHeight-36);
+  const fit=Math.min(availableW/img.naturalWidth,availableH/img.naturalHeight,1);
+  zoomBaseW=Math.max(80,Math.round(img.naturalWidth*fit));
+  zoomBaseH=Math.max(80,Math.round(img.naturalHeight*fit));
+  zoomLevel=1;
+  applyZoom();
+  stage.scrollLeft=0; stage.scrollTop=0;
+}
+
+function openModal(src,alt='Imagem anatômica'){
+  const modal=document.getElementById('modal');
+  const img=document.getElementById('modalImg');
+  img.alt=alt;
+  modal.classList.remove('hidden');
+  document.body.style.overflow='hidden';
+  zoomLevel=1; zoomBaseW=0; zoomBaseH=0;
+
+  img.onload=()=>requestAnimationFrame(fitModalImage);
+  img.onerror=()=>alert('Não foi possível carregar esta imagem.');
+  img.src='';
+  requestAnimationFrame(()=>{
+    img.src=src;
+    if(img.complete && img.naturalWidth) requestAnimationFrame(fitModalImage);
+  });
+  setTimeout(()=>modal.querySelector(':scope > button')?.focus(),80);
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.add('hidden');
+  document.body.style.overflow='';
+}
+
+function applyZoom(){
+  const img=document.getElementById('modalImg');
+  const pct=document.getElementById('zoomPct');
+  if(!zoomBaseW || !zoomBaseH) return;
+  img.style.width=Math.round(zoomBaseW*zoomLevel)+'px';
+  img.style.height=Math.round(zoomBaseH*zoomLevel)+'px';
+  if(pct) pct.textContent=Math.round(zoomLevel*100)+'%';
+}
+
+function changeZoom(next){
+  const stage=document.getElementById('zoomStage');
+  const prevW=Math.max(stage.scrollWidth,1), prevH=Math.max(stage.scrollHeight,1);
+  const relX=(stage.scrollLeft+stage.clientWidth/2)/prevW;
+  const relY=(stage.scrollTop+stage.clientHeight/2)/prevH;
+  zoomLevel=Math.max(.5,Math.min(5,next));
+  applyZoom();
+  requestAnimationFrame(()=>{
+    stage.scrollLeft=Math.max(0,stage.scrollWidth*relX-stage.clientWidth/2);
+    stage.scrollTop=Math.max(0,stage.scrollHeight*relY-stage.clientHeight/2);
+  });
+}
+
+function zoomIn(){changeZoom(zoomLevel+.25)}
+function zoomOut(){changeZoom(zoomLevel-.25)}
+function resetZoom(){changeZoom(1)}
+document.getElementById('search').addEventListener('input',render);
+for(const [id,val] of [['allBtn','ALL'],['g1Btn','G1'],['g2Btn','G2']]) document.getElementById(id).onclick=()=>{
+ filter=val;document.querySelectorAll('.tabs button').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false')});document.getElementById(id).classList.add('active');document.getElementById(id).setAttribute('aria-selected','true');render()
+};
+document.getElementById('practiceBtn').onclick=()=>{practice=!practice;document.getElementById('practiceBtn').textContent=practice?'Sair do modo prática':'Modo prática';document.getElementById('practiceBtn').setAttribute('aria-pressed',String(practice));render()};
+document.getElementById('pdfBtn').onclick=()=>{window.print()};
+
+let fontScale=parseFloat(localStorage.getItem('thorax-font')||'1');
+document.documentElement.style.setProperty('--scale',fontScale);
+function setPressed(id,on){let b=document.getElementById(id);if(b)b.setAttribute('aria-pressed',String(on))}
+function toggleClassPersist(cls,key,id){
+ const on=!document.body.classList.contains(cls);document.body.classList.toggle(cls,on);localStorage.setItem(key,on?'1':'0');setPressed(id,on)
+}
+['high-contrast','readable','reduce-motion'].forEach((cls,i)=>{const key=['thorax-contrast','thorax-readable','thorax-motion'][i];if(localStorage.getItem(key)==='1')document.body.classList.add(cls)});
+setPressed('contrastBtn',document.body.classList.contains('high-contrast'));setPressed('readableBtn',document.body.classList.contains('readable'));setPressed('motionBtn',document.body.classList.contains('reduce-motion'));
+document.getElementById('fontUp').onclick=()=>{fontScale=Math.min(1.5,fontScale+.1);document.documentElement.style.setProperty('--scale',fontScale);localStorage.setItem('thorax-font',fontScale)};
+document.getElementById('fontDown').onclick=()=>{fontScale=Math.max(.85,fontScale-.1);document.documentElement.style.setProperty('--scale',fontScale);localStorage.setItem('thorax-font',fontScale)};
+document.getElementById('contrastBtn').onclick=()=>toggleClassPersist('high-contrast','thorax-contrast','contrastBtn');
+document.getElementById('readableBtn').onclick=()=>toggleClassPersist('readable','thorax-readable','readableBtn');
+document.getElementById('motionBtn').onclick=()=>toggleClassPersist('reduce-motion','thorax-motion','motionBtn');
+
+function doneKey(k){return 'thorax-done-'+k}
+function isDone(k){return localStorage.getItem(doneKey(k))==='1'}
+function toggleDone(k){localStorage.setItem(doneKey(k),isDone(k)?'0':'1');render();updateProgress()}
+function updateProgress(){
+ const total=DATA.length, done=DATA.filter(x=>isDone(x.group+'-'+x.code.replaceAll('.','_'))).length, pct=total?Math.round(done*100/total):0;
+ document.getElementById('progressBar').style.width=pct+'%';document.getElementById('progressText').textContent=`${pct}% concluído (${done}/${total})`
+}
+const oldRender=render;render=function(){oldRender();updateProgress()};
+
+document.getElementById('speakBtn').onclick=()=>{
+ if(!('speechSynthesis' in window))return alert('Leitura em voz alta não é suportada neste navegador.');
+ const card=document.activeElement.closest?.('.card')||document.querySelector('.card');
+ if(!card)return alert('Selecione um card primeiro.');
+ speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(card.innerText.replace('Anexar imagem','').replace('Remover',''));
+ u.lang='pt-BR';speechSynthesis.speak(u)
+};
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape'&&!document.getElementById('modal').classList.contains('hidden'))closeModal();
+ if((e.ctrlKey||e.metaKey)&&e.key==='+'){e.preventDefault();zoomIn()}
+ if((e.ctrlKey||e.metaKey)&&e.key==='-'){e.preventDefault();zoomOut()}
+});
+document.getElementById('zoomStage').addEventListener('wheel',e=>{
+      if(!document.getElementById('modal').classList.contains('hidden')){
+        e.preventDefault();
+        e.deltaY<0?zoomIn():zoomOut();
+      }
+    },{passive:false});
+let pinchStart=0,pinchZoom=1;
+document.getElementById('zoomStage').addEventListener('touchstart',e=>{
+  if(e.touches.length===2){
+    pinchStart=Math.hypot(
+      e.touches[0].clientX-e.touches[1].clientX,
+      e.touches[0].clientY-e.touches[1].clientY
+    );
+    pinchZoom=zoomLevel;
+  }
+},{passive:true});
+document.getElementById('zoomStage').addEventListener('touchmove',e=>{
+  if(e.touches.length===2 && pinchStart){
+    e.preventDefault();
+    const d=Math.hypot(
+      e.touches[0].clientX-e.touches[1].clientX,
+      e.touches[0].clientY-e.touches[1].clientY
+    );
+    zoomLevel=Math.max(.5,Math.min(5,pinchZoom*(d/pinchStart)));
+    applyZoom();
+  }
+},{passive:false});
+
+// subtle 3D tilt on pointer devices
+document.addEventListener('pointermove',e=>{
+ if(matchMedia('(hover:hover) and (pointer:fine)').matches&&!document.body.classList.contains('reduce-motion')){
+   const c=e.target.closest('.card'); if(!c)return;
+   const r=c.getBoundingClientRect(), x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+   c.style.transform=`translateY(-3px) rotateX(${-y*2.5}deg) rotateY(${x*3}deg)`;
+ }
+});
+document.addEventListener('pointerout',e=>{const c=e.target.closest?.('.card');if(c)c.style.transform=''});
+
+
+let imagesGloballyHidden=localStorage.getItem('thorax-hide-images')==='1';
+
+function applyGlobalImageState(){
+ const btn=document.getElementById('imageToggleBtn');
+ if(!btn)return;
+ btn.textContent=imagesGloballyHidden?'Mostrar imagens':'Ocultar imagens';
+ btn.setAttribute('aria-pressed',String(imagesGloballyHidden));
+ btn.classList.toggle('active-hide',imagesGloballyHidden);
+ document.querySelectorAll('.card').forEach(card=>{
+   const key=card.dataset.key;
+   const individuallyHidden=localStorage.getItem('thorax-hide-'+key)==='1';
+   card.classList.toggle('images-hidden',imagesGloballyHidden || individuallyHidden);
+   const b=card.querySelector('.toggle-card-image');
+   if(b){
+     const hidden=imagesGloballyHidden || individuallyHidden;
+     b.textContent=hidden?'Mostrar imagem':'Ocultar imagem';
+     b.setAttribute('aria-pressed',String(hidden));
+     b.disabled=imagesGloballyHidden;
+   }
+ });
+}
+function toggleCardImage(key,btn){
+ const current=localStorage.getItem('thorax-hide-'+key)==='1';
+ localStorage.setItem('thorax-hide-'+key,current?'0':'1');
+ applyGlobalImageState();
+}
+document.getElementById('imageToggleBtn').onclick=()=>{
+ imagesGloballyHidden=!imagesGloballyHidden;
+ localStorage.setItem('thorax-hide-images',imagesGloballyHidden?'1':'0');
+ applyGlobalImageState();
+};
+
+const renderWithImages=render;
+render=function(){
+ renderWithImages();
+ setTimeout(applyGlobalImageState,0);
+};
+
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js');
+
+setTimeout(applyGlobalImageState,50);
+</script>
+</body></html>
